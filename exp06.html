@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive SVG Drawing Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .drawing-box {
+      border: 1px solid #333;
+      padding: 15px;
+      display: inline-block;
+    }
+    svg {
+      border: 1px solid black;
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <div class="drawing-box">
+    <h3><b>SVG Drawing Tool</b></h3>
+    <svg id="drawingCanvas" width="500" height="300"></svg>
+  </div>
+
+  <script>
+    const svg = document.getElementById("drawingCanvas");
+    let drawing = false;
+    let path = null;
+
+    // Convert mouse position to SVG coordinates
+    function getMousePosition(evt) {
+      const rect = svg.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+
+    // Start drawing
+    svg.addEventListener("mousedown", (e) => {
+      drawing = true;
+      const pos = getMousePosition(e);
+      path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("stroke", "blue");
+      path.setAttribute("stroke-width", "2");
+      path.setAttribute("fill", "none");
+      path.setAttribute("d", `M ${pos.x} ${pos.y}`);
+      svg.appendChild(path);
+    });
+
+    // Draw as mouse moves
+    svg.addEventListener("mousemove", (e) => {
+      if (!drawing) return;
+      const pos = getMousePosition(e);
+      let d = path.getAttribute("d");
+      path.setAttribute("d", `${d} L ${pos.x} ${pos.y}`);
+    });
+
+    // Stop drawing
+    svg.addEventListener("mouseup", () => {
+      drawing = false;
+    });
+
+    svg.addEventListener("mouseleave", () => {
+      drawing = false;
+    });
+  </script>
+</body>
+</html>
+
