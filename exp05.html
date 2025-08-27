@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Product Filter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .product-box {
+      border: 1px solid #333;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .product {
+      border: 1px solid #ddd;
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 4px;
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <div class="product-box">
+    <h3>Product List</h3>
+    <label for="filter">Filter by Category:</label>
+    <select id="filter">
+      <option value="all">All</option>
+      <option value="clothing">Clothing</option>
+      <option value="electronics">Electronics</option>
+      <option value="books">Books</option>
+    </select>
+
+    <div id="productList"></div>
+  </div>
+
+  <script>
+    // Product data
+    const products = [
+      { name: "T-Shirt", category: "clothing" },
+      { name: "Jeans", category: "clothing" },
+      { name: "Headphones", category: "electronics" },
+      { name: "Smartphone", category: "electronics" },
+      { name: "Novel", category: "books" },
+      { name: "Cookbook", category: "books" }
+    ];
+
+    const filterSelect = document.getElementById("filter");
+    const productList = document.getElementById("productList");
+
+    // Function to display products
+    function displayProducts(category) {
+      productList.innerHTML = ""; // Clear list
+      const filtered = category === "all" 
+        ? products 
+        : products.filter(p => p.category === category);
+
+      filtered.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.textContent = p.name;
+        productList.appendChild(div);
+      });
+    }
+
+    // Initial load
+    displayProducts("all");
+
+    // Update on dropdown change
+    filterSelect.addEventListener("change", () => {
+      displayProducts(filterSelect.value);
+    });
+  </script>
+</body>
+</html>
+
